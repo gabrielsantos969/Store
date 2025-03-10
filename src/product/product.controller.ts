@@ -21,8 +21,8 @@ export class ProductController {
     }
 
     @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number): Promise<Product | null>{
-        return this.service.findOne(id);
+    async findById(@Param('id', ParseIntPipe) id: number): Promise<Product | null>{
+        return this.service.findById(id);
     }
 
     @Put(':id')

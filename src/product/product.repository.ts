@@ -15,7 +15,7 @@ export class ProductRepository implements ProductRepositoryInterface{
         return this.prisma.product.findMany();
     }
 
-    async findOne(id: number): Promise<Product | null>{
+    async findById(id: number): Promise<Product | null>{
         return this.prisma.product.findUnique({ 
             where: { id }
         });
