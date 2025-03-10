@@ -12,7 +12,7 @@ export class ProductController {
     @Post()
     @UsePipes(new ZodValidationPipe(CreateProductSchema))
     async create(@Body() data: CreateProductDto): Promise<Product>{
-        return this.service.create(data);
+        return await this.service.create(data);
     }
 
     @Get()

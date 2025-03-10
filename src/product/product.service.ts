@@ -13,22 +13,22 @@ export class ProductService {
     ){}
 
     async create(createProductDto: CreateProductDto): Promise<Product>{
-        return this.repository.create(createProductDto);
+        return await this.repository.create(createProductDto);
     }
 
     async findAll(): Promise<Product[]> {
-        return this.repository.findAll();
+        return await this.repository.findAll();
       }
     
       async findOne(id: number): Promise<Product | null> {
-        return this.repository.findOne(id);
+        return await this.repository.findOne(id);
       }
     
       async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-        return this.repository.update(id, updateProductDto);
+        return await this.repository.update(id, updateProductDto);
       }
     
       async remove(id: number): Promise<Product> {
-        return this.repository.remove(id);
+        return await this.repository.remove(id);
       }
 }
