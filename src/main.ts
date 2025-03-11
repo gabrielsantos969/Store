@@ -9,6 +9,11 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization'
+  });
   app.useBodyParser('json')
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
