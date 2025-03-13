@@ -13,11 +13,12 @@ export class ProductService {
     ){}
 
     async create(createProductDto: CreateProductDto): Promise<Product>{
+      const { categoryId, ...productData} = createProductDto;
         return await this.repository.create({
-          ...createProductDto,
+          ...productData,
           Category: {
             connect: {
-              id: createProductDto.categoryId
+              id: categoryId
             }
           }
         });
