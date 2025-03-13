@@ -5,9 +5,7 @@ import { ZodObject, ZodIssue, ZodInvalidTypeIssue } from 'zod';
 export class ZodValidationPipe implements PipeTransform {
   constructor(private schema: ZodObject<any>) {}
 
-  transform(value: any) {
-    console.log(value);
-    
+  transform(value: any) {    
     try {
       this.schema.parse(value);
       return value;

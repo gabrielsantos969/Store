@@ -32,8 +32,6 @@ export class ProductController {
         @Param('id') id: string,
         @Body(new ZodValidationPipe(UpdateProductSchema)) data: UpdateProductDto,
     ): Promise<Product>{ 
-        console.log(data);
-        
         return this.service.update(id, data);
     }
 
