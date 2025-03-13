@@ -5,6 +5,7 @@ export const UpdateProductSchema = z.object({
     description: z.string().optional(),
     price: z.number().min(0.01).optional(),
     imageUrl: z.string().optional(),
+    categoryId: z.number().int().positive().optional()
 });
 
 export type UpdateProductDto = z.infer<typeof UpdateProductSchema>;

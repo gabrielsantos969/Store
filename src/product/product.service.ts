@@ -13,14 +13,21 @@ export class ProductService {
     ){}
 
     async create(createProductDto: CreateProductDto): Promise<Product>{
-        return await this.repository.create(createProductDto);
+        return await this.repository.create({
+          ...createProductDto,
+          Category: {
+            connect: {
+              id: createProductDto.categoryId
+            }
+          }
+        });
     }
 
     async findAll(): Promise<Product[]> {
         return await this.repository.findAll();
       }
     
-      async findById(id: number): Promise<Product | null> {
+      async findById(id: string): Promise<Product | null> {
         const product = await this.repository.findById(id);
         if(!product){
           throw new NotFoundException(`Product with ID: ${id} not found`);
@@ -28,12 +35,26 @@ export class ProductService {
         return product; 
       }
     
-      async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
+      async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
         await this.findById(id);
-        return await this.repository.update(id, updateProductDto);
+
+        const prismaData = {
+          ...updateProductDto
+        }
+
+        if(updateProductDto.categoryId){
+          prismaData['Category'] = {
+            connect: {
+              id: updateProductDto.categoryId,
+            },
+          };
+          delete prismaData.categoryId;
+        }
+        
+        return await this.repository.update(id, prismaData);
       }
     
-      async remove(id: number): Promise<Product> {
+      async remove(id: string): Promise<Product> {
         await this.findById(id)
         return await this.repository.remove(id);
       }
