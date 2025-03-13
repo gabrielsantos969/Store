@@ -29,7 +29,7 @@ export class ProductController {
     @Put(':id')
     @UseGuards(AuthGuard('jwt'))
     async update(
-        @Param('id', ParseIntPipe) id: string,
+        @Param('id') id: string,
         @Body(new ZodValidationPipe(UpdateProductSchema)) data: UpdateProductDto,
     ): Promise<Product>{ 
         console.log(data);
@@ -39,7 +39,7 @@ export class ProductController {
 
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'))
-    async remove(@Param('id', ParseIntPipe) id: string):Promise<Product>{
+    async remove(@Param('id') id: string):Promise<Product>{
         return this.service.remove(id);
     }
 }
