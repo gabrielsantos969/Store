@@ -17,8 +17,7 @@ model Product {
   categoryId Int
   Category   Category @relation(fields: [categoryId], references: [id])
 
-  Stock   Stock?  @relation
-  stockId String? @unique
+  Stock Stock? @relation
 }
 
 enum Unit {
