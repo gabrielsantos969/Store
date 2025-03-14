@@ -4,14 +4,14 @@ import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { CreateProductDto, CreateProductSchema } from './dto/create-product.dto';
 import { Product } from '@prisma/client';
 import { UpdateProductDto, UpdateProductSchema } from './dto/update-product.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('product')
 export class ProductController {
     constructor(private readonly service: ProductService){}
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async create(@Body(new ZodValidationPipe(CreateProductSchema)) data: CreateProductDto): Promise<Product>{
         return await this.service.create(data);
     }
@@ -27,7 +27,7 @@ export class ProductController {
     }
 
     @Put(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async update(
         @Param('id') id: string,
         @Body(new ZodValidationPipe(UpdateProductSchema)) data: UpdateProductDto,
@@ -36,7 +36,7 @@ export class ProductController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async remove(@Param('id') id: string):Promise<Product>{
         return this.service.remove(id);
     }

@@ -5,6 +5,7 @@ import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { CreateCategoryDto, CreateCategorySchema } from './dto/create-category.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateCategoryDto, UpdateCategorySchema } from './dto/update-category.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -21,13 +22,13 @@ export class CategoryController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async create(@Body(new ZodValidationPipe(CreateCategorySchema)) data: CreateCategoryDto): Promise<Category>{
         return await this.service.create(data);
     }
 
     @Put(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async update(
         @Param('id', ParseIntPipe) id: number, 
         @Body(new ZodValidationPipe(UpdateCategorySchema))data: UpdateCategoryDto
@@ -36,7 +37,7 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RolesGuard)
     async remove(@Param('id', ParseIntPipe) id: number): Promise<Category>{
         return this.service.remove(id);
     }
