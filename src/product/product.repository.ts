@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma, Product } from "@prisma/client";
+import { Prisma, Product, Stock } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ProductRepositoryInterface } from "./product.repository.interface";
 
@@ -17,7 +17,10 @@ export class ProductRepository implements ProductRepositoryInterface{
 
     async findById(id: string): Promise<Product | null>{
         return this.prisma.product.findUnique({ 
-            where: { id }
+            where: { id },
+            include: {
+                Stock: true
+            }
         });
     }
 
@@ -31,6 +34,17 @@ export class ProductRepository implements ProductRepositoryInterface{
     async remove(id: string): Promise<Product>{
         return this.prisma.product.delete({
             where: { id }
+        })
+    }
+
+    async updateStockProduct(id: string, quantity: number): Promise<Stock>{
+        return await this.prisma.stock.update({
+            where: {
+                productId: id
+            },
+            data: {
+                quantity
+            }
         })
     }
 }
