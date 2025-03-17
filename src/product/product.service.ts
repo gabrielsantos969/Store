@@ -68,12 +68,4 @@ export class ProductService {
     return await this.repository.remove(id);
   }
 
-  async updateStockProduct(id: string, quantity): Promise<Stock>{
-    await this.findById(id);
-    if(quantity <= 0){
-      throw new Error('Quantity cannot be negative or equal to zero.');
-    }
-    return await this.repository.updateStockProduct(id, quantity);
-  }
-
 }
