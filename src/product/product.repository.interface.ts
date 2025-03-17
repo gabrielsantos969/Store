@@ -6,5 +6,4 @@ export interface ProductRepositoryInterface{
     findById(id: string): Promise<Product | null>;
     update(id: string, data: Prisma.ProductUpdateInput): Promise<Product>;
     remove(id: string): Promise<Product>;
-    updateStockProduct(id: string, quantity: number): Promise<Stock>;
 }

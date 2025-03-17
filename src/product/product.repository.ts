@@ -37,14 +37,4 @@ export class ProductRepository implements ProductRepositoryInterface{
         })
     }
 
-    async updateStockProduct(id: string, quantity: number): Promise<Stock>{
-        return await this.prisma.stock.update({
-            where: {
-                productId: id
-            },
-            data: {
-                quantity
-            }
-        })
-    }
 }
