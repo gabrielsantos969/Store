@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './common/strategies/jwt.strategy';
 import { CategoryModule } from './category/category.module';
 import { StockModule } from './stock/stock.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
-  imports: [ProductModule, PrismaModule, AuthModule, CategoryModule, StockModule],
+  imports: [ProductModule, PrismaModule, AuthModule, CategoryModule, StockModule, AddressModule],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
 })
