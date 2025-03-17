@@ -7,33 +7,20 @@ import { Decimal } from "@prisma/client/runtime/library";
 export class StockRepository implements IStockRepository{
     constructor(private readonly prisma: PrismaClient){}
 
-    async addProductStock(productId: string, quantity: number): Promise<Stock> {
-        const stock = await this.prisma.stock.findUnique({
+    async findByProductId(productId: string): Promise<Stock | null> {
+        return await this.prisma.stock.findUnique({
             where: { productId }
-        });
+        })
+    }
 
-        if(!stock){
-            throw new NotFoundException(`Stock not found for the product.`);
-        }
-        
+    async addProductStock(productId: string, quantity: number): Promise<Stock> {        
         return await this.prisma.stock.update({
             where: {productId},
             data: { quantity: { increment: new Decimal(quantity) }}
         });
     }
+    
     async removeProductStock(productId: string, quantity: number): Promise<Stock> {
-        const stock = await this.prisma.stock.findUnique({
-            where: { productId }
-        });
-
-        if(!stock){
-            throw new NotFoundException(`Stock not found for the product.`);
-        }
-
-        if(stock.quantity.toNumber() < quantity){
-            throw new Error(`Insufficient quantity in stock.`);
-        }
-
         return await this.prisma.stock.update({
             where: { productId },
             data: { quantity: { decrement: new Decimal(quantity) }}
