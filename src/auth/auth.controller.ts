@@ -1,17 +1,26 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
-import { RegisterUserDto, RegisterUserSchema } from './dto/register-user.dto';
+import { RegisterUserClientDto, RegisterUserClientSchema } from './dto/register-user-client.dto';
 import { AuthService } from './auth.service';
 import { LoginUserDto, LoginUserSchema } from './dto/login-user.dto';
+import { AdminGuard } from './guards/admin.guard';
+import { RegisterUserAdminDto, RegisterUserAdminSchema } from './dto/register-user-admin.dto';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly service: AuthService){}
 
     @Post('register')
-    @UsePipes(new ZodValidationPipe(RegisterUserSchema))
-    async register(@Body() data: RegisterUserDto): Promise<any>{
-        return this.service.register(data);
+    @UsePipes(new ZodValidationPipe(RegisterUserClientSchema))
+    async registerClient(@Body() data: RegisterUserClientDto): Promise<any>{
+        return this.service.registerClient(data);
+    }
+
+    @Post('admin/register')
+    @UseGuards(AdminGuard)
+    @UsePipes(new ZodValidationPipe(RegisterUserAdminSchema))
+    async registerAdmin(@Body() data: RegisterUserAdminDto): Promise<any>{
+        return this.service.registerAdmin(data);
     }
 
     @Post('login')
