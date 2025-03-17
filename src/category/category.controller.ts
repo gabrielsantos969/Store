@@ -4,7 +4,9 @@ import { Category } from '@prisma/client';
 import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { CreateCategoryDto, CreateCategorySchema } from './dto/create-category.dto';
 import { UpdateCategoryDto, UpdateCategorySchema } from './dto/update-category.dto';
-import { AdminGuard } from 'src/auth/guards/admin.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('category')
 export class CategoryController {
@@ -21,13 +23,15 @@ export class CategoryController {
     }
 
     @Post()
-    @UseGuards(AdminGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
     async create(@Body(new ZodValidationPipe(CreateCategorySchema)) data: CreateCategoryDto): Promise<Category>{
         return await this.service.create(data);
     }
 
     @Put(':id')
-    @UseGuards(AdminGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
     async update(
         @Param('id', ParseIntPipe) id: number, 
         @Body(new ZodValidationPipe(UpdateCategorySchema))data: UpdateCategoryDto
@@ -36,7 +40,8 @@ export class CategoryController {
     }
 
     @Delete(':id')
-    @UseGuards(AdminGuard)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
     async remove(@Param('id', ParseIntPipe) id: number): Promise<Category>{
         return this.service.remove(id);
     }
