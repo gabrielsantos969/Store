@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/common/strategies/jwt.strategy';
-import { RolesGuard } from './roles.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 @Module({
   imports:[
@@ -22,7 +22,7 @@ import { RolesGuard } from './roles.guard';
     AuthService,
     AuthRepository,
     JwtStrategy,
-    RolesGuard,
+    AdminGuard,
     { 
       provide: 'IAuthRepository',
       useClass: AuthRepository

@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IStockRepository } from './stock.repository.interface';
 import { Stock } from '@prisma/client';
 
@@ -28,7 +28,7 @@ export class StockService {
         const stock = await this.repository.findByProductId(productId);
 
         if(stock!.quantity.toNumber() < quantity){
-            throw new Error(`Insufficient quantity in stock.`);
+            throw new BadRequestException(`Insufficient quantity in stock.`);
         }
 
         return this.repository.removeProductStock(productId, quantity);

@@ -4,14 +4,14 @@ import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { CreateProductDto, CreateProductSchema } from './dto/create-product.dto';
 import { Product } from '@prisma/client';
 import { UpdateProductDto, UpdateProductSchema } from './dto/update-product.dto';
-import { RolesGuard } from 'src/auth/roles.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 
 @Controller('product')
 export class ProductController {
     constructor(private readonly service: ProductService){}
 
     @Post()
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminGuard)
     async create(@Body(new ZodValidationPipe(CreateProductSchema)) data: CreateProductDto): Promise<Product>{
         return await this.service.create(data);
     }
@@ -27,7 +27,7 @@ export class ProductController {
     }
 
     @Put(':id')
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminGuard)
     async update(
         @Param('id') id: string,
         @Body(new ZodValidationPipe(UpdateProductSchema)) data: UpdateProductDto,
@@ -36,7 +36,7 @@ export class ProductController {
     }
 
     @Delete(':id')
-    @UseGuards(RolesGuard)
+    @UseGuards(AdminGuard)
     async remove(@Param('id') id: string):Promise<Product>{
         return this.service.remove(id);
     }
