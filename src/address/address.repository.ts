@@ -1,4 +1,4 @@
-import { Prisma, Address } from "@prisma/client";
+import { Prisma, Address, Customer } from "@prisma/client";
 import { IAddressRepository } from "./address.repository.interface";
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -38,6 +38,16 @@ export class AddressRepository implements IAddressRepository {
 
     async remove(customerId: string, id: string): Promise<Address> {
         return await this.prisma.address.delete({ where: { customerId, id }});
+    }
+
+    async findByIdCustomer(userId: string): Promise<Customer | null> {
+        console.log("PASSEI REPO", userId);
+
+        const customer = await this.prisma.customer.findUnique({
+            where: { userId }
+        });
+        
+        return customer; 
     }
 
 }

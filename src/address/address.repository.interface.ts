@@ -1,4 +1,4 @@
-import { Address, Prisma } from "@prisma/client";
+import { Address, Customer, Prisma } from "@prisma/client";
 
 export interface IAddressRepository {
     create(data: Prisma.AddressCreateInput): Promise<Address>;
@@ -6,4 +6,5 @@ export interface IAddressRepository {
     findById(customerId: string, id: string): Promise<Address | null>;
     update(customerId: string, id: string, data: Prisma.AddressUpdateInput): Promise<Address>;
     remove(customerId: string, id: string): Promise<Address>;
+    findByIdCustomer(userId: string): Promise<Customer | null>;
 }
