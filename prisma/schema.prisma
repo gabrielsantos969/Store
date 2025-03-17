@@ -77,7 +77,8 @@ model Address {
   neighborhood String
   city         String
   state        String
-  zipCode      String
+  zipcode      String
+  isDefault    Boolean @default(false)
 
   Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String
