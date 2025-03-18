@@ -11,12 +11,14 @@ export class AddressService {
         private readonly repository: IAddressRepository
     ){}
 
-    async create(data: CreateAddressDto): Promise<Address> {
+    async create(userId: string, data: CreateAddressDto): Promise<Address> {
+        const customer = await this.findByIdCustomer(userId);
+
         return await this.repository.create({
             ...data,
             Customer: {
                 connect: {
-                    id: data.customerId
+                    id: customer.id
                 }
             }
         } )
@@ -25,13 +27,13 @@ export class AddressService {
     async findAllByCustomerId(userId:string): Promise<Address[]> {
         const customer = await this.findByIdCustomer(userId);
 
-        return await this.repository.findAllByCustomerId(customer!.id);
+        return await this.repository.findAllByCustomerId(customer.id);
     }
 
     async findById(userId:string, id: string): Promise<Address | null> {
         const customer = await this.findByIdCustomer(userId);
 
-        const address = await this.repository.findById(customer!.id , id);
+        const address = await this.repository.findById(customer.id , id);
 
         if(!address){
             throw new NotFoundException(`Address not exist.`);
@@ -42,17 +44,17 @@ export class AddressService {
 
     async update(userId:string, id: string, data: UpdateAddressDto): Promise<Address> {
         const customer = await this.findByIdCustomer(userId);
-        await this.findById(customer!.id , id);
-        return await this.repository.update(customer!.id, id, data);
+        await this.findById(customer.id , id);
+        return await this.repository.update(customer.id, id, data);
     }
 
     async remove(userId:string, id: string): Promise<Address> {
         const customer = await this.findByIdCustomer(userId);
-        await this.findById(customer!.id, id);
-        return await this.repository.remove(customer!.id, id);
+        await this.findById(customer.id, id);
+        return await this.repository.remove(customer.id, id);
     }
 
-    async findByIdCustomer(userId: string): Promise<Customer | null> {
+    async findByIdCustomer(userId: string): Promise<Customer> {
         const customer = await this.repository.findByIdCustomer(userId);
 
         if(!customer){
