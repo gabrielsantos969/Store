@@ -30,7 +30,7 @@ export class AddressService {
         return await this.repository.findAllByCustomerId(customer.id);
     }
 
-    async findById(userId:string, id: string): Promise<Address | null> {
+    async findById(userId:string, id: string): Promise<Address> {
         const customer = await this.findByIdCustomer(userId);
 
         const address = await this.repository.findById(customer.id , id);
@@ -43,15 +43,13 @@ export class AddressService {
     }
 
     async update(userId:string, id: string, data: UpdateAddressDto): Promise<Address> {
-        const customer = await this.findByIdCustomer(userId);
-        await this.findById(customer.id , id);
-        return await this.repository.update(customer.id, id, data);
+        const address = await this.findById(userId, id);
+        return await this.repository.update(address.customerId, id, data);
     }
 
     async remove(userId:string, id: string): Promise<Address> {
-        const customer = await this.findByIdCustomer(userId);
-        await this.findById(customer.id, id);
-        return await this.repository.remove(customer.id, id);
+        const address = await this.findById(userId, id);
+        return await this.repository.remove(address.customerId, id);
     }
 
     async findByIdCustomer(userId: string): Promise<Customer> {
