@@ -25,21 +25,31 @@ export class CustomerService {
                 }
             });
         } catch (error) {
-            throw new InternalServerErrorException(`Error: ${error.message}`);
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
         }
     }
 
-    async findById(id: string): Promise<Customer>{
+    async findById(id: string, userId: string): Promise<Customer>{
         try {
+            await this.findByUserId(userId);
+
             const customer = await this.repository.findById(id);
 
             if(!customer){
-                throw new NotFoundException(`Customer not exists.`);
+                throw new NotFoundException(`Customer not found.`);
             }
 
             return customer; 
         } catch (error) {
-            throw new InternalServerErrorException(`Error: ${error.message}`);
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
         }
     }
 
@@ -48,12 +58,16 @@ export class CustomerService {
             const customer = await this.repository.findByUserId(userId);
 
             if(!customer){
-                throw new NotFoundException(`Customer not exists.`);
+                throw new NotFoundException(`Customer not found.`);
             }
 
             return customer; 
         } catch (error) {
-            throw new InternalServerErrorException(`Error: ${error.message}`);
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
         }
     }
 
@@ -62,7 +76,11 @@ export class CustomerService {
             await this.findByUserId(userId);
             return await this.repository.update(userId, data);
         } catch (error) {
-            throw new InternalServerErrorException(`Error: ${error.message}`);
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
         }
     }
 
@@ -71,7 +89,11 @@ export class CustomerService {
             await this.findByUserId(userId);
             return await this.repository.remove(userId);
         } catch (error) {
-            throw new InternalServerErrorException(`Error: ${error.message}`);
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
         }
     }
 }
