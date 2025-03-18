@@ -1,6 +1,6 @@
-import { Prisma, Product, Stock } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 
-export interface ProductRepositoryInterface{
+export interface IProductRepository{
     create(data: Prisma.ProductCreateInput): Promise<Product>;
     findAll(): Promise<Product[]>;
     findById(id: string): Promise<Product | null>;

@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
-import { ProductRepositoryInterface } from './product.repository.interface';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
@@ -12,7 +11,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     ProductService,
     ProductRepository,
     {
-      provide: 'ProductRepositoryInterface',
+      provide: 'IProductRepository',
       useClass: ProductRepository
     }
   ]

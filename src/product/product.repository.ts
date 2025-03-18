@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, Product, Stock } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
-import { ProductRepositoryInterface } from "./product.repository.interface";
+import { IProductRepository } from "./product.repository.interface";
 
 @Injectable()
-export class ProductRepository implements ProductRepositoryInterface{
+export class ProductRepository implements IProductRepository{
     constructor(private readonly prisma: PrismaService){}
 
     async create(data: Prisma.ProductCreateInput): Promise<Product>{
