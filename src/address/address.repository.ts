@@ -20,7 +20,7 @@ export class AddressRepository implements IAddressRepository {
     }
 
     async findById(customerId: string, id: string): Promise<Address | null> {
-        return await this.prisma.address.findUnique({
+        return await this.prisma.address.findFirst({
             where: {
                 customerId,
                 id
