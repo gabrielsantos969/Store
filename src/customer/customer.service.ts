@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ICustomerRepository } from './customer.repository.interface';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { Customer } from '@prisma/client';
@@ -14,7 +14,11 @@ export class CustomerService {
     async create(userId: string, data: CreateCustomerDto): Promise<Customer>{
 
         try {
-            await this.findByUserId(userId);
+            const customer = await this.repository.findByUserId(userId);
+
+            if(customer){
+                throw new ConflictException(`Customer already exists.`);
+            }
 
             return await this.repository.create({
                 ...data,
@@ -26,6 +30,10 @@ export class CustomerService {
             });
         } catch (error) {
             if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            if (error instanceof ConflictException) {
                 throw error;
             }
 
