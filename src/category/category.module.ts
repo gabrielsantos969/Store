@@ -13,6 +13,7 @@ import { CategoryController } from './category.controller';
             useClass: CategoryRepository
         }
     ],
-    controllers: [CategoryController]
+    controllers: [CategoryController],
+    exports: [CategoryService]
 })
 export class CategoryModule {}

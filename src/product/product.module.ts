@@ -3,9 +3,10 @@ import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, CategoryModule],
   controllers: [ProductController],
   providers: [
     ProductService,
