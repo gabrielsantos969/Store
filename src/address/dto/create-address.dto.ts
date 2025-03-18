@@ -8,8 +8,7 @@ export const CreateAddressSchema = z.object({
     city: z.string(),
     state: z.string(),
     zipcode: z.string(),
-    isDefaul: z.boolean(),
-    customerId: z.string()
+    isDefault: z.boolean()
 });
 
 export type CreateAddressDto = z.infer<typeof CreateAddressSchema>;

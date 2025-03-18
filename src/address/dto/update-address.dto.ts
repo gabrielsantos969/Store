@@ -8,8 +8,7 @@ export const UpdateAddressSchema = z.object({
     city: z.string().optional(),
     state: z.string().optional(),
     zipcode: z.string().optional(),
-    isDefaul: z.boolean().optional(),
-    customerId: z.string().optional()
+    isDefault: z.boolean().optional()
 });
 
 export type UpdateAddressDto = z.infer<typeof UpdateAddressSchema>;
