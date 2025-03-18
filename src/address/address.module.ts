@@ -5,11 +5,10 @@ import { AddressService } from './address.service';
 import { AddressController } from './address.controller';
 
 @Module({
-    imports: [
-        PrismaModule
-    ],
+    imports: [PrismaModule],
     providers: [
         AddressService,
+        AddressRepository,
         {
             provide: 'IAddressRepository',
             useClass: AddressRepository

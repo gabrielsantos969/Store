@@ -23,11 +23,7 @@ export class AddressService {
     }
     
     async findAllByCustomerId(userId:string): Promise<Address[]> {
-        console.log("PASSEI SERVI 1");
-        
         const customer = await this.findByIdCustomer(userId);
-
-        console.log("PASSEI SERVI 2");
 
         return await this.repository.findAllByCustomerId(customer!.id);
     }
@@ -57,10 +53,7 @@ export class AddressService {
     }
 
     async findByIdCustomer(userId: string): Promise<Customer | null> {
-        console.log("PASSEI SERV 3")
         const customer = await this.repository.findByIdCustomer(userId);
-        console.log("PASSEI SERVI 4");
-        console.log(customer);
 
         if(!customer){
             throw new NotFoundException(`Curstomer not found.`);

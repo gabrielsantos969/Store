@@ -1,7 +1,9 @@
 import { Prisma, Address, Customer } from "@prisma/client";
 import { IAddressRepository } from "./address.repository.interface";
 import { PrismaService } from "src/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class AddressRepository implements IAddressRepository {
     constructor(private readonly prisma: PrismaService){}
 
@@ -41,8 +43,6 @@ export class AddressRepository implements IAddressRepository {
     }
 
     async findByIdCustomer(userId: string): Promise<Customer | null> {
-        console.log("PASSEI REPO", userId);
-
         const customer = await this.prisma.customer.findUnique({
             where: { userId }
         });

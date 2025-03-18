@@ -14,7 +14,6 @@ export class AddressController {
     @Roles('ADMIN', 'CLIENT')
     async findAllByCustomerId(@Req() req): Promise<Address[]>{
         const userId = req.user.userId;
-        console.log(req.user.userId)
         return await this.service.findAllByCustomerId(userId);
     }
 }
