@@ -13,6 +13,7 @@ import { CustomerController } from './customer.controller';
       useClass: CustomerRepository
     }
   ],
-  controllers: [CustomerController]
+  controllers: [CustomerController],
+  exports: [CustomerService]
 })
 export class CustomerModule {}

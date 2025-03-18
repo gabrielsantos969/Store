@@ -61,7 +61,7 @@ export class CustomerService {
         }
     }
 
-    async findByUserId(userId: string): Promise<Customer | null>{
+    async findByUserId(userId: string): Promise<Customer>{
         try {
             const customer = await this.repository.findByUserId(userId);
 

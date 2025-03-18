@@ -3,9 +3,10 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { AddressRepository } from './address.repository';
 import { AddressService } from './address.service';
 import { AddressController } from './address.controller';
+import { CustomerModule } from 'src/customer/customer.module';
 
 @Module({
-    imports: [PrismaModule],
+    imports: [PrismaModule, CustomerModule],
     providers: [
         AddressService,
         AddressRepository,
