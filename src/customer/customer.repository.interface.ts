@@ -5,5 +5,5 @@ export interface  ICustomerRepository{
     findById(id: string): Promise<Customer | null>;
     findByUserId(userId: string): Promise<Customer | null>;
     update(userId: string, data: Prisma.CustomerUpdateInput): Promise<Customer>;
-    remove(userid: string): Promise<Customer>;
+    remove(userId: string): Promise<Customer>;
 }
