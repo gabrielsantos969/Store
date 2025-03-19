@@ -14,16 +14,16 @@ enum Format {
 }
 
 model Product {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   description String?
   price       Decimal
   imageUrl    String?
-  weight      Decimal @default(0) @db.Decimal(10, 2) // example: 0.50 kg
-  height      Decimal @default(2) @db.Decimal(10, 2) // Min 2 cm
-  width       Decimal @default(11) @db.Decimal(10, 2) // min 11 cm
-  length      Decimal @default(16) @db.Decimal(10, 2) // min 16 cm
-  diameter    Decimal @default(0) @db.Decimal(10, 2) // 0 if it is not cylindrical
+  weight      Decimal  @default(0) @db.Decimal(10, 2) // example: 0.50 kg
+  height      Decimal  @default(2) @db.Decimal(10, 2) // Min 2 cm
+  width       Decimal  @default(11) @db.Decimal(10, 2) // min 11 cm
+  length      Decimal  @default(16) @db.Decimal(10, 2) // min 16 cm
+  diameter    Decimal? @default(0) @db.Decimal(10, 2) // 0 if it is not cylindrical
 
   format Format @default(BOX)
 
