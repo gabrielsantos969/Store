@@ -8,15 +8,23 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CartRepository implements ICartRepository{
     constructor(private readonly prisma: PrismaService){}
 
-    async addItem(userId: string, data: AddCartItemDto): Promise<CartItem> {
+    async findCartByUserId(userId: string): Promise<Cart> {
         throw new Error("Method not implemented.");
     }
 
-    async removeItem(userId: string, productId: string): Promise<any> {
+    async createOrUpdateCart(userId: string): Promise<Cart> {
         throw new Error("Method not implemented.");
     }
 
-    async getCart(userId: string): Promise<Cart> {
+    async findCartItem(cartId: string, productId: string): Promise<CartItem> {
+        throw new Error("Method not implemented.");
+    }
+
+    async addOrUpdateCartItem(data: AddCartItemDto): Promise<CartItem> {
+        throw new Error("Method not implemented.");
+    }
+
+    async removeCartItem(cartId: string, productId: string): Promise<any> {
         throw new Error("Method not implemented.");
     }
 
