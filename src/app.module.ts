@@ -9,9 +9,10 @@ import { CategoryModule } from './category/category.module';
 import { StockModule } from './stock/stock.module';
 import { AddressModule } from './address/address.module';
 import { CustomerModule } from './customer/customer.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [ProductModule, PrismaModule, AuthModule, CategoryModule, StockModule, AddressModule, CustomerModule],
+  imports: [ProductModule, PrismaModule, AuthModule, CategoryModule, StockModule, AddressModule, CustomerModule, CartModule],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
 })
