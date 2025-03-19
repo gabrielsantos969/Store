@@ -30,7 +30,8 @@ model Product {
   categoryId Int
   Category   Category @relation(fields: [categoryId], references: [id])
 
-  Stock Stock? @relation
+  Stock    Stock?     @relation
+  CartItem CartItem[]
 }
 
 enum Unit {
@@ -82,6 +83,7 @@ model Customer {
 
   User    User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   Address Address[]
+  Cart    Cart?
 }
 
 model Address {
@@ -106,4 +108,25 @@ model Category {
   imageUrl    String?
 
   Product Product[]
+}
+
+model Cart {
+  id String @id @default(uuid())
+
+  Customer   Customer   @relation(fields: [customerId], references: [id])
+  customerId String     @unique
+  items      CartItem[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model CartItem {
+  id       String  @id @default(uuid())
+  quantity Int     @default(1)
+  total    Decimal @default(0)
+
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String
+  Cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    String
 }
