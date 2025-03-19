@@ -8,7 +8,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CartRepository implements ICartRepository{
     constructor(private readonly prisma: PrismaService){}
 
-    async findCartByUserId(customerId: string): Promise<Cart | null> {
+    async findCartByCustomerId(customerId: string): Promise<Cart | null> {
         return await this.prisma.cart.findUnique({
             where: { customerId },
             include: { items: { include: { Product: true }}}
