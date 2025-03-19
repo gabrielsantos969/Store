@@ -8,28 +8,56 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CartRepository implements ICartRepository{
     constructor(private readonly prisma: PrismaService){}
 
-    async findCartByUserId(userId: string): Promise<Cart> {
-        throw new Error("Method not implemented.");
+    async findCartByUserId(customerId: string): Promise<Cart | null> {
+        return await this.prisma.cart.findUnique({
+            where: { customerId },
+            include: { items: { include: { Product: true }}}
+        });
     }
 
-    async createOrUpdateCart(userId: string): Promise<Cart> {
-        throw new Error("Method not implemented.");
+    async createOrUpdateCart(customerId: string): Promise<Cart> {
+        return await this.prisma.cart.upsert({
+            where: { customerId },
+            update: {},
+            create: { customerId }
+        })
     }
 
-    async findCartItem(cartId: string, productId: string): Promise<CartItem> {
-        throw new Error("Method not implemented.");
+    async findCartItem(cartId: string, productId: string): Promise<CartItem | null> {
+        return await this.prisma.cartItem.findFirst({
+            where: { cartId, productId  },
+
+        })
     }
 
     async addOrUpdateCartItem(data: AddCartItemDto): Promise<CartItem> {
-        throw new Error("Method not implemented.");
+        return await this.prisma.cartItem.upsert({
+            where: {
+                cartId_productId: { cartId: data.cartId, productId: data.productId }
+            },
+            update: {
+                quantity: { increment: data.quantity },
+                total: { increment: data.total }
+            },
+            create: {
+                cartId: data.cartId,
+                productId: data.productId,
+                quantity: data.quantity,
+                total: data.total
+            }
+        })
     }
 
     async removeCartItem(cartId: string, productId: string): Promise<any> {
-        throw new Error("Method not implemented.");
+        return this.prisma.cartItem.deleteMany({
+            where: { cartId, productId },
+          });
     }
 
-    async clearCart(userId: string): Promise<Cart> {
-        throw new Error("Method not implemented.");
+    async clearCart(customerId: string): Promise<Cart> {
+        return this.prisma.cart.delete({
+            where: { customerId },
+        });
     }
 
 }
