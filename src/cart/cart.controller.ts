@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -19,5 +19,11 @@ export class CartController {
     async getCart(@Req() req): Promise<Cart>{
         const userId = req.user.userId;
         return await this.service.getCart(userId);
+    }
+
+    @Delete('remove-item/:id')
+    async remoteItem(@Param('id') productId: string,@Req() req): Promise<any>{
+        const userId = req.user.userId;
+        return this.service.removeItem(userId, productId);
     }
 }
