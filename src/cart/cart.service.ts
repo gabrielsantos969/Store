@@ -3,7 +3,6 @@ import { ICartRepository } from './cart.repository.interface';
 import { Cart, CartItem } from '@prisma/client';
 import { ProductService } from 'src/product/product.service';
 import { CustomerService } from 'src/customer/customer.service';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class CartService {
@@ -29,7 +28,21 @@ export class CartService {
                 total
             });
         } catch (error) {
-            if(error instanceof NotFoundError){
+            if(error instanceof NotFoundException){
+                throw error;
+            }
+
+            throw new InternalServerErrorException(`${error.message}`);
+        }
+    }
+
+    async findCartItem(cartId: string, productId: string): Promise<CartItem>{
+        try {
+            const cartItemExist = await this.repository.findCartItem(cartId, productId);
+            if(!cartItemExist) throw new NotFoundException(`Product not found in Cart`);
+            return cartItemExist;
+        } catch (error) {
+            if(error instanceof NotFoundException){
                 throw error;
             }
 
@@ -40,11 +53,12 @@ export class CartService {
     async removeItem(userId: string, productId: string): Promise<any>{
         try {
             const cart = await this.getCart(userId);
-            await this.repository.removeCartItem(cart!.id, productId);
+            await this.findCartItem(cart.id, productId);
 
+            await this.repository.removeCartItem(cart!.id, productId);
             return { message: 'Item successfully removed' };
         } catch (error) {
-            if(error instanceof NotFoundError){
+            if(error instanceof NotFoundException){
                 throw error;
             }
 
@@ -73,7 +87,7 @@ export class CartService {
             const customerExists = await this.customer.findByUserId(userId);
             return this.repository.clearCart(customerExists.id);
         } catch (error) {
-            if(error instanceof NotFoundError){
+            if(error instanceof NotFoundException){
                 throw error;
             }
 
