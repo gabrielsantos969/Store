@@ -14,6 +14,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
                 if(updatedProduct !== undefined){
                     const productId = params.args.where.id;
 
+                    const oldProduct = await this.product.findUnique({
+                        where: { id: productId },
+                        select: { price: true },
+                    });
+
+                    if (!oldProduct || updatedProduct.price === undefined) {
+                        return next(params);
+                    }
+
+                    if (oldProduct.price === updatedProduct.price) {
+                        return next(params);
+                    }
+
                     const cartItems = await this.cartItem.findMany({
                         where: { productId },
                         select: { id: true, quantity: true }
