@@ -8,7 +8,28 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         await this.$connect();
         
         this.$use(async (params, next) => {
-            
+            if(params.model === 'Product' && params.action === 'update'){
+                const updatedProduct = params.args.data;
+
+                if(updatedProduct !== undefined){
+                    const productId = params.args.where.id;
+
+                    const cartItems = await this.cartItem.findMany({
+                        where: { productId },
+                        select: { id: true, quantity: true }
+                    });
+                    
+                    for(const item of cartItems){
+                        await this.cartItem.update({
+                            where: { id: item.id },
+                            data: {
+                                total: updatedProduct.price * item.quantity,
+                            }
+                        });
+                    }
+                }
+            }
+
             if (params.model === 'Address' && (params.action === 'create' || params.action === 'update')) {
                 const data = params.args.data;
         
