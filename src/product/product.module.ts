@@ -15,6 +15,7 @@ import { CategoryModule } from 'src/category/category.module';
       provide: 'IProductRepository',
       useClass: ProductRepository
     }
-  ]
+  ],
+  exports: [ProductService]
 })
 export class ProductModule {}
