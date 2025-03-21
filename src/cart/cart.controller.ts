@@ -26,4 +26,10 @@ export class CartController {
         const userId = req.user.userId;
         return this.service.removeItem(userId, productId);
     }
+
+    @Delete()
+    async clearCart(@Req() req): Promise<Cart>{
+        const userId = req.user.userId;
+        return await this.service.clearCart(userId); 
+    }
 }

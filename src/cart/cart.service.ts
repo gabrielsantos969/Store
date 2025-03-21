@@ -85,7 +85,8 @@ export class CartService {
     async clearCart(userId: string): Promise<Cart>{
         try {
             const customerExists = await this.customer.findByUserId(userId);
-            return this.repository.clearCart(customerExists.id);
+            await this.repository.clearCart(customerExists.id);
+            return await this.getCart(userId);
         } catch (error) {
             if(error instanceof NotFoundException){
                 throw error;
